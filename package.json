@@ -1,0 +1,16 @@
+{
+  "description": "",
+  "main":"app.js",
+  "scripts": {
+    "dev": "nodemon src/app.js"
+  },
+  "dependencies": {
+    "corn": "^0.0.1",
+    "express": "^4.18.2",
+    "sequelize": "^6.28.0"
+  },
+  "devDependencies": {
+    "@babel/helper-compilation-targets": "^7.20.7",
+    "nodemon": "^2.0.20"
+  }
+}
