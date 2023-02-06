@@ -7,10 +7,14 @@ name varchar(45) default null,
 address varchar (45) default null,
 email varchar(45) unique,
 phone_num int(10) unique,
+password varchar(20)unique,
 primary key (id)
 );
 describe user;
-SELECT *FROM user;
+insert into user values
+(1, 'andres', 'st 23 asds','c@gmail.com', 334244232,taranana);
+
+SELECT * FROM user;
 
 create table purchase(
 id int(11) not null auto_increment,
