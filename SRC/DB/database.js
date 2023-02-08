@@ -3,11 +3,12 @@ const mysql = require('mysql');
 const sqlcon =  mysql.createConnection({
 host:'localhost',
 user: 'root',
-password:'password',
+password:'Alan1s:)',
 database:'garden'
 });
 
 // comprobar la conexión de la base
+module.exports = sqlcon;
 sqlcon.connect(function(err){
     if(err){
         console.log(err);
@@ -16,5 +17,4 @@ sqlcon.connect(function(err){
         console.log('DB is connected');
     }
 });
-module.exports = sqlcon;
 
