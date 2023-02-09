@@ -16,31 +16,27 @@ app.use(require('/MODELS/services.js'));
 app.post('./MODELS/forgotPassword.js', async(req, res, next)=>{
     try{
         const email = req.body.email;
-        const origin = req.header('Origin'); // we are  getting the request origin from  the origin header.
+        const origin = req.header('Origin');
         const user = await sqlcon.getEmail(email);
         if(!user){
-            // here we always return ok response to prevent email enumeration
+            
            return res.json({status: 'ok'});
         }
-        // Get all the tokens that were previously set for this user and set used to 1. This will prevent old and expired tokens  from being used. 
+       
         await sqlcon.expireOldTokens(email, 1);
-     
-        // create reset token that expires after 1 hours
-       const resetToken = crypto.randomBytes(40).toString('hex');
-       const resetTokenExpires = new Date(Date.now() + 60*60*1000);
-       const createdAt = new Date(Date.now());
-      const expiredAt = resetTokenExpires;
-        
-       //insert the new token into resetPasswordToken table
-       await sqlcon.insertResetToken(email, resetToken,createdAt, expiredAt, 0);
-     
-       // send email
-       await sendPasswordResetEmail(email,resetToken, origin);
-       res.json({ message: 'Please check your email for a new password' });
-         
-        } catch(e){
-            console.log(e);
-        }
+
+        const resetToken = crypto.randomBytes(40).toString('hex');
+        const resetTokenExpires = new Date(Date.now() + 60*60*1000);
+        const createdAt = new Date(Date.now());
+        const expiredAt = resetTokenExpires;
+            
+        await sqlcon.insertResetToken(email, resetToken,createdAt, expiredAt, 0);
+        await sendPasswordResetEmail(email,resetToken, origin);
+        res.json({ message: 'Please check your email for a new password' });
+            
+    } catch(e){
+         console.log(e);
+    }
 });
 
 
@@ -55,8 +51,8 @@ async function sendEmail({ to, subject, html, from = process.env.EMAIL_FROM }) {
             host: 'smtp.ethereal.email',
             port: 587,
             auth: {
-              user: process.env.USER, // generated ethereal user
-              pass: process.env.PASS // generated ethereal password
+              user: process.env.USER,
+              pass: process.env.PASS 
             }
     })
     await transporter.sendMail({ from, to, subject, html });
@@ -89,8 +85,6 @@ async function  validateResetToken  (req, res, next){
     if (!resetToken || !email) {
         return res.sendStatus(400);
        }
- 
-    // then we need to verify if the token exist in the resetPasswordToken and not expired.
     const currentTime =  new Date(Date.now());
     const token = await sqlcon.findValidToken(resetToken, email, currentTime);
     

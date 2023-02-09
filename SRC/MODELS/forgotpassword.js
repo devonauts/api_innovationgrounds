@@ -31,7 +31,6 @@ sqlcon.findValidToken = (token, email, currentTime) =>{
                 return reject(error);
             }
             return resolve(tokens[0]);
-            //return resolve(token);
         });
     });
 };
