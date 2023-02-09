@@ -8,7 +8,7 @@ database:'garden'
 });
 
 // comprobar la conexión de la base
-module.exports = sqlcon;
+
 sqlcon.connect(function(err){
     if(err){
         console.log(err);
@@ -18,3 +18,6 @@ sqlcon.connect(function(err){
     }
 });
 
+module.exports = {
+    sqlcon: sqlcon
+};

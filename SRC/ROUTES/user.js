@@ -56,6 +56,7 @@ router.get('/mainUser',(req,res)=>{
     })
     .catch(err => console.log(err));
 });
+
 module.exports = router;
 /*
 router.put('/:id', (req, res)=>{
